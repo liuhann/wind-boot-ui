@@ -1,86 +1,84 @@
-import axios from 'axios';
+import axios from 'axios'
 
 const instance = axios.create({
-        baseURL: 'http://localhost:8090/api',
-        timeout: 3000,
-        withCredentials: true
-    }),
+  baseURL: 'http://localhost:8080/api/control',
+  timeout: 120000,
+  withCredentials: true
+})
 
-    getSystemModules = async() => {
-        const response = await instance.get('/package/system/list');
+const getSystemModules = async () => {
+  const response = await instance.get('/package/system/list')
 
-        return response.data;
-    },
+  return response.data
+}
 
-    getDbList = async() => {
-        const response = await instance.get('/database/list');
+const getDbList = async () => {
+  const response = await instance.get('/database/list')
 
-        return response.data;
-    },
+  return response.data
+}
 
-    getDbCollections = async dbName => {
-        const { data } = await instance.get(`/database/${dbName}/collections`);
+const getDbCollections = async dbName => {
+  const { data } = await instance.get(`/database/${dbName}/collections`)
 
-        return data;
-    },
+  return data
+}
 
-    getSystemInfo = async() => {
-        const { data } = await instance.get('/os');
+const getSystemInfo = async () => {
+  const { data } = await instance.get('/os')
 
-        return data;
-    },
+  return data
+}
 
-    getHotModules = async() => {
-        const { data } = await instance.get('/package/hot/list');
+const getHotModules = async () => {
+  const { data } = await instance.get('/package/hot/list')
 
-        return data;
-    },
+  return data
+}
 
-    undeployHotModule = async(name) => {
-        const { data } = await instance.get('/package/undeploy?name=' + name);
+const undeployHotModule = async (name) => {
+  const { data } = await instance.get('/package/uninstall?name=' + name)
 
-        return data;
-    },
+  return data
+}
 
-    installUpdateModule = async name => {
-        const { data } = await instance.get('/package/deploy?name=' + name);
+const installUpdateModule = async name => {
+  const { data } = await instance.get('/package/install?name=' + name)
 
-        return data;
-    },
+  return data
+}
 
-    getPackageInfo = async name => {
-        const { data } = await instance.get(`/assets/info?name=${name}`);
+const searchPackagesByName = async name => {
+  const { data } = await instance.get(`/package/searchname?name=${name}`)
+  return data
+}
 
-        return data;
-    },
+const searchNpmByName = async name => {
+  const { data } = await instance.get(`/package/info?name=${name}`)
+  return data
+}
 
-    searchPackagesByName = async name => {
-        const { data } = await instance.get(`/assets/searchname/${name}`);
+const restartServer = async () => {
+  const { data } = await instance.get(`/assets/searchname/${name}`)
 
-        return data;
-    },
+  return data
+}
 
-    restartServer = async() => {
-        const { data } = await instance.get(`/assets/searchname/${name}`);
+const getCollectionDocuments = async (dbName, collName, page = 1, pageSize = 20) => {
+  const { data } = await instance.get(`/database/${dbName}/${collName}/documents?skip=${(page - 1) * pageSize}&limit=${pageSize}`)
 
-        return data;
-    },
-
-    getCollectionDocuments = async(dbName, collName, page = 1, pageSize = 20) => {
-        const { data } = await instance.get(`/database/${dbName}/${collName}/documents?skip=${(page - 1) * pageSize}&limit=${pageSize}`);
-
-        return data;
-    };
+  return data
+}
 
 export {
-    getSystemInfo,
-    getSystemModules,
-    getHotModules,
-    getPackageInfo,
-    undeployHotModule,
-    installUpdateModule,
-    getDbList,
-    searchPackagesByName,
-    getCollectionDocuments,
-    getDbCollections
-};
+  getSystemInfo,
+  getSystemModules,
+  getHotModules,
+  undeployHotModule,
+  installUpdateModule,
+  getDbList,
+  searchPackagesByName,
+  searchNpmByName,
+  getCollectionDocuments,
+  getDbCollections
+}
