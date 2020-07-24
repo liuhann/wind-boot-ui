@@ -3,3 +3,7 @@
   text-overflow:ellipsis;
   overflow:hidden;
 }
+
+.ant-tabs-tabpane {
+  padding-left: 4px;
+}

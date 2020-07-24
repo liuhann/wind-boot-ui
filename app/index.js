@@ -5,18 +5,15 @@ import './style.css'
 import ModuleManage from './ModuleManage.jsx'
 import DataBaseManage from './DataBaseManage.jsx'
 import SystemManage from './SystemManage.jsx'
+import LogManage from './LogManage.jsx'
 
 import { Layout, Menu, Breadcrumb } from 'antd'
 import {
   DesktopOutlined,
-  PieChartOutlined,
-  FileOutlined,
-  TeamOutlined,
-  UserOutlined
+  PieChartOutlined
 } from '@ant-design/icons'
 
 const { Content, Footer, Sider } = Layout
-const { SubMenu } = Menu
 
 class SiderDemo extends React.Component {
   state = {
@@ -25,7 +22,7 @@ class SiderDemo extends React.Component {
     collapsed: false
   };
 
-  onCollapse = collapsed => {
+  handleCollapse = collapsed => {
     this.setState({ collapsed })
   };
 
@@ -36,11 +33,13 @@ class SiderDemo extends React.Component {
       return <ModuleManage />
     } else if (this.state.menuKey === '2') {
       return <DataBaseManage />
+    } else if (this.state.menuKey === '3') {
+      return <LogManage />
     }
     return <div>未配置</div>
   }
 
-  menuClicked = ({ item, key, keyPath, domEvent }) => {
+  handleMenuClicked = ({ item, key, keyPath, domEvent }) => {
     this.setState({
       menuKey: key
     })
@@ -54,7 +53,7 @@ class SiderDemo extends React.Component {
         <Sider
           collapsible
           collapsed={this.state.collapsed}
-          onCollapse={this.onCollapse}
+          onCollapse={this.handleCollapse}
         >
           <div
             className='logo'
@@ -62,63 +61,29 @@ class SiderDemo extends React.Component {
           <Menu
             theme='dark'
             defaultSelectedKeys={['1']}
-            onClick={this.menuClicked}
+            onClick={this.handleMenuClicked}
             mode='inline'
           >
             <Menu.Item
               key='0'
               icon={<PieChartOutlined />}
-            >
-                            系统信息
+            >系统信息
             </Menu.Item>
             <Menu.Item
               key='1'
               icon={<PieChartOutlined />}
-            >
-                            模块列表
+            >模块列表
             </Menu.Item>
             <Menu.Item
               key='2'
               icon={<DesktopOutlined />}
-            >
-                          数据
+            >数据
             </Menu.Item>
-            <SubMenu
-              key='sub1'
-              icon={<UserOutlined />}
-              title='User'
-            >
-              <Menu.Item
-                key='3'
-              >Tom
-              </Menu.Item>
-              <Menu.Item
-                key='4'
-              >Bill
-              </Menu.Item>
-              <Menu.Item
-                key='5'
-              >Alex
-              </Menu.Item>
-            </SubMenu>
-            <SubMenu
-              key='sub2'
-              icon={<TeamOutlined />}
-              title='Team'
-            >
-              <Menu.Item
-                key='6'
-              >Team 1
-              </Menu.Item>
-              <Menu.Item
-                key='8'
-              >Team 2
-              </Menu.Item>
-            </SubMenu>
             <Menu.Item
-              key='9'
-              icon={<FileOutlined />}
-            />
+              key='3'
+              icon={<DesktopOutlined />}
+            >日志
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout

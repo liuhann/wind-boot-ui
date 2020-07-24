@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL: 'http://localhost:8080/api/control',
-  timeout: 120000,
+  timeout: 1200000,
   withCredentials: true
 })
 
@@ -59,13 +59,25 @@ const searchNpmByName = async name => {
 }
 
 const restartServer = async () => {
-  const { data } = await instance.get(`/assets/searchname/${name}`)
+  const { data } = await instance.get('/restart')
 
   return data
 }
 
 const getCollectionDocuments = async (dbName, collName, page = 1, pageSize = 20) => {
-  const { data } = await instance.get(`/database/${dbName}/${collName}/documents?skip=${(page - 1) * pageSize}&limit=${pageSize}`)
+  await instance.get(`/database/collection/restful?db=${dbName}&coll=${collName}`)
+  const { data } = await instance.get(`http://localhost:8080/api/restful/${dbName}/${collName}?skip=${(page - 1) * pageSize}&limit=${pageSize}`)
+  return data
+}
+
+const getLogFileList = async () => {
+  const { data } = await instance.get('/log/list')
+
+  return data
+}
+
+const tailLogFile = async (file, lines) => {
+  const { data } = await instance.get(`/log/tail?file=${file}&lines=${lines}`)
 
   return data
 }
@@ -80,5 +92,8 @@ export {
   searchPackagesByName,
   searchNpmByName,
   getCollectionDocuments,
-  getDbCollections
+  restartServer,
+  getDbCollections,
+  getLogFileList,
+  tailLogFile
 }
